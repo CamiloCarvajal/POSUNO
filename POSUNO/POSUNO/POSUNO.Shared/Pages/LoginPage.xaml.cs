@@ -1,4 +1,5 @@
 ﻿using POSUNO.Helpers;
+using POSUNO.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,16 +30,39 @@ namespace POSUNO.Pages
         {
             this.InitializeComponent();
         }
- 
+
         private async void btnIniciar_Click(object sender, RoutedEventArgs e)
         {
             bool isValid = await ValidForm();
-            if (!isValid) {
+            if (!isValid)
+            {
                 return;
             }
-            MessageDialog messageDialog = new MessageDialog("Vamos bien", "OK");
-            await messageDialog.ShowAsync();
 
+            Response response = await ApiService.LoginAsync(new LoginRequest
+            {
+                Email = TextEmail.Text,
+                Password = txtPassword.Password
+
+            });
+
+            MessageDialog messageDialog;
+            if (!response.IsSuccess)
+            {
+                messageDialog = new MessageDialog(response.message, "Error");
+                await messageDialog.ShowAsync();
+                return;
+            }
+            User user = (User)response.result;
+            if (user == null)
+            {
+                messageDialog = new MessageDialog("Usuario o contrasena no existe", "Error");
+                await messageDialog.ShowAsync();
+                return;
+            }
+
+            messageDialog = new MessageDialog($"Bienvenido: {user.Fullname}", "Ok");
+            await messageDialog.ShowAsync();
         }
 
         private async Task<bool> ValidForm()
@@ -54,14 +78,14 @@ namespace POSUNO.Pages
 
             if (!RegexUtilities.IsValidEmail(TextEmail.Text))
             {
-                messageDialog = new MessageDialog("Debes ingresar un email valido", "Error");
+                messageDialog = new MessageDialog("Debes ingresar un email válido", "Error");
                 await messageDialog.ShowAsync();
                 return false;
             }
 
-            if (string.IsNullOrEmpty(txtPassword.Password))
+            if (string.IsNullOrEmpty(txtPassword.Password) || txtPassword.Password.Length < 6)
             {
-                messageDialog = new MessageDialog("Debes ingresar tu email", "Error");
+                messageDialog = new MessageDialog("Ingresa una contraseña válida", "Error");
                 await messageDialog.ShowAsync();
                 return false;
             }

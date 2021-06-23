@@ -11,7 +11,7 @@ namespace POSUNO.Api.Models
 
         [Required]
         [MaxLength(20)]
-        [MinLength(5)]
+        [MinLength(6)]
         public string Password { get; set; }
     }
 }
