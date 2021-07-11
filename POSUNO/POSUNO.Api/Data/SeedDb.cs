@@ -51,11 +51,14 @@ namespace POSUNO.Api.Data
 
         private async Task CheckCustomersAsync()
         {
-            User user = await _context.Users.FirstOrDefaultAsync();
-            for (int i = 1; i <= 200; i++)
+            if (!_context.Customers.Any())
             {
-                _context.Customers.Add(new Customer { FirstName = $"Cliente {i}", LastName = $"Apellido {i}", PhoneNumber = "3122210110", Email = $"cliente{ i }@yopmail.com", Address = "calle Luna", IsActive = true, User = user });
-                await _context.SaveChangesAsync();
+                User user = await _context.Users.FirstOrDefaultAsync();
+                for (int i = 1; i <= 200; i++)
+                {
+                    _context.Customers.Add(new Customer { FirstName = $"Cliente {i}", LastName = $"Apellido {i}", PhoneNumber = "3122210110", Email = $"cliente{ i }@yopmail.com", Address = "calle Luna", IsActive = true, User = user });
+                    await _context.SaveChangesAsync();
+                }
             }
         }
 
