@@ -17,17 +17,17 @@
             <TextBlock Text="POSUNO" Foreground="White" FontSize="20" Padding="10"/>
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,-45,15,0">
                 <TextBlock x:Name="txtWelcome" Text="Welcome" FontSize="20" Foreground="SlateGray" Padding="10" VerticalAlignment="Center"/>
-                <Image Source="/Assets/exit.png" Height="30" Tapped="LogoutImage_Tapped"/>
+                <Image Source="/Assets/exit.png" Height="22" Tapped="LogoutImage_Tapped"/>
             </StackPanel>
         </StackPanel>
         <NavigationView Grid.Row="1" IsPaneOpen="False">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Clientes">
+                <NavigationViewItem Content="Clientes" Tapped="CustomersNavigationViewItem_Tapped">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="People"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Productos">
+                <NavigationViewItem Content="Productos" Tapped="ProductsNavigationViewItem_Tapped">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="SolidStar"/>
                     </NavigationViewItem.Icon>
@@ -40,6 +40,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.PaneFooter>
+            <Frame x:Name="MyFrame"/>
         </NavigationView>
     </Grid>
 </Page>
